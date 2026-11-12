@@ -92,7 +92,7 @@ export default function Irregularverbs() {
         const propertyKey = randomProperty as keyof typeof listIrregularVerbs[number];
         const expectedAnswer = String(listIrregularVerbs[indexList][propertyKey] || "").toLowerCase();
         setCorrectAnswer(expectedAnswer);
-        const result = expectedAnswer === text.toLowerCase();
+        const result = expectedAnswer === text.toLowerCase().trim();
         setIsSuccess(result);
         setModalVisible(true);
         handleModeGame(result);

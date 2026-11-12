@@ -3,14 +3,13 @@ import GroupButton from '@/components/GroupButton';
 import StackTable from '@/components/StackTable';
 import { verbsIrregularsList } from '@/db/verbsIrregularsList';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 export default function LearnIrregularVerbs() {
     const [search, setSearch] = useState("");
     const [listFilter, setListFilter] = useState(verbsIrregularsList);
     const [levelLearn, setLevelLearn] = useState("All");
-    const colorScheme = useColorScheme();
-    const isDarkMode = colorScheme === 'dark';
+
     useEffect(() => {
         const result = verbsIrregularsList.filter((item) => {
             const matchesSearch =

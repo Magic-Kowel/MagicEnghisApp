@@ -90,7 +90,15 @@ export default function RootLayout() {
           />
           <Drawer.Screen
             name="irregularverbs/Irregularverbs"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Práctica de Verbos' }}
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Irregulares' }}
+          />
+          <Drawer.Screen
+            name="phrasalVerbs/LevelsScreen"
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Frasales' }}
+          />
+          <Drawer.Screen
+            name="phrasalVerbs/PhrasalVerbs"
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Frasales' }}
           />
         </Drawer>
       </PaperProvider>

@@ -19,6 +19,7 @@ export default function CustomDrawerContent(props: any) {
       <HeaderDrawer text='Magic Enghis' />
       <ItemMenu title='Verbos irregulares' icon='book-open-variant' path='/' />
       <ItemMenu title='Prepositions Place' icon='sign-direction' path='/prepositionsPlace' />
+      <ItemMenu title='Verbos Frasales' icon='sign-direction' path='/phrasalVerbs/LevelsScreen' />
       <DrawerSubMenu
         title="Memorize words"
         iconName="people-outline"
