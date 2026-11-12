@@ -1,19 +1,19 @@
 
 import CustomKeyboard from '@/components/CustomKeyboard';
 import ModalCheck from '@/components/ModalCheck';
-import SwitchLabel from '@/components/SwitchLabel';
 import Title from '@/components/Title';
 import { COLORS } from '@/constants/colors';
 import { useGameStore } from '@/store/useGameStore';
 import { randomIndex } from '@/tools/randomIndex';
+import speakMessage from '@/tools/speech';
 import { getData, saveData } from '@/tools/storage';
-import { useRouter } from 'expo-router';
-import { useEffect, useState, } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useState, } from 'react';
 import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 import { Button, Card, Chip, Text } from 'react-native-paper';
 const getRandomProperty = (obj: any) => {
     const keys = Object.keys(obj).filter(
-        (key) => key !== "translation" && key !== "difficulty",
+        (key) => key !== "translation" && key !== "difficulty" && key !== "infinitive",
     );
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     return randomKey;
@@ -21,48 +21,61 @@ const getRandomProperty = (obj: any) => {
 export default function Irregularverbs() {
     const [text, setText] = useState("");
     const [indexList, setIndexList] = useState(0);
-    const [level, setLevel] = useState(1);
-    const [mode, setMode] = useState(true);
+    const [level, setLevel] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-    const [randomProperty, setRandomProperty] = useState("infinitive");
+    const [randomProperty, setRandomProperty] = useState("past");
     const [correctAnswer, setCorrectAnswer] = useState("");
     const router = useRouter();
     const colorScheme = useColorScheme();
-    const levelWords = useGameStore((state) => state.currentLevelWords);
+    const listIrregularVerbs = useGameStore((state) => state.irregularVerbs);
+    const score = useGameStore((state) => state.score);
     const isDarkMode = colorScheme === 'dark';
     useEffect(() => {
-        if (!mode) {
-            handleRandom();
-        }
-    }, [mode]);
+        handleRandom();
+    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            if (!modalVisible) {
+                speakMessage(listIrregularVerbs[indexList]?.infinitive);
+            }
+            return () => {
+                // detener audio si es necesario
+            };
+        }, [modalVisible])
+    );
     const handleRandom = (nextLevel = level) => {
-        const index = randomIndex(levelWords);
-        setIndexList(mode ? nextLevel : index);
-        const property = getRandomProperty(levelWords[index]);
+        const index = randomIndex(listIrregularVerbs);
+        setIndexList(nextLevel);
+        const property = getRandomProperty(listIrregularVerbs[index]);
         setRandomProperty(property);
     };
     async function handleModeGame(result: boolean) {
         let nextLevel = level;
-        if (mode) {
-            if (result) {
-                nextLevel = level + 1;
-                if (nextLevel == levelWords.length) {
-                    const savedScore = await getData('score') ?? 0;
-                    console.log(savedScore);
-
-                    await saveData('score', (savedScore + 1));
-                    router.back();
-                }
-                if (nextLevel <= levelWords.length) {
-                    setLevel(nextLevel);
-                }
-            } else {
-                nextLevel = 0;
-                setLevel(nextLevel);
-            }
+        // 1. Determinar el siguiente nivel según si acertó o falló
+        if (!result) {
+            nextLevel = 0; // Si falla, vuelve al inicio
+        } else {
+            nextLevel = level + 1; // Si acierta, avanza
         }
+        // 2. Verificar si ya se completaron todos los niveles
+        if (nextLevel === listIrregularVerbs.length) {
+            const savedScore = await getData('score') ?? 0;
+
+            // Si el puntaje actual es MAYOR al récord guardado, lo actualizamos
+            if (score > savedScore) {
+                await saveData('score', score); // Guardamos el puntaje real, SIN sumarle 1
+            }
+            setLevel(0);
+            router.back();
+            return;
+        }
+        // 3. Actualizar el nivel actual
+        setLevel(nextLevel);
         handleRandom(nextLevel);
+        // 4. Sincronizar el índice de la palabra según el mod
+        setIndexList(nextLevel); // En modo secuencial, el índice sigue al nivel
+
     }
 
     const handleVirtualKeyPress = (key: string) => {
@@ -73,23 +86,17 @@ export default function Irregularverbs() {
         }
     };
     const handleValidate = () => {
-        if (levelWords.length === level) {
+        if (listIrregularVerbs.length === level) {
             return;
         }
-        const propertyKey = randomProperty as keyof typeof levelWords[number];
-        const expectedAnswer = String(levelWords[indexList][propertyKey] || "").toLowerCase();
-
-        // Guardamos la respuesta correcta para mostrarla en el Dialog si falla
+        const propertyKey = randomProperty as keyof typeof listIrregularVerbs[number];
+        const expectedAnswer = String(listIrregularVerbs[indexList][propertyKey] || "").toLowerCase();
         setCorrectAnswer(expectedAnswer);
-
         const result = expectedAnswer === text.toLowerCase();
-
         setIsSuccess(result);
         setModalVisible(true);
-
         handleModeGame(result);
         setText("");
-
     };
 
 
@@ -108,7 +115,7 @@ export default function Irregularverbs() {
                                 textAlign: 'center'
                             }}
                         >
-                            {levelWords[indexList]?.infinitive.toUpperCase()}
+                            {listIrregularVerbs[indexList]?.infinitive.toUpperCase()}
                         </Text>
                         <Text
                             variant="titleLarge"
@@ -118,7 +125,7 @@ export default function Irregularverbs() {
                                 marginVertical: 20
                             }}
                         >
-                            {levelWords[indexList]?.translation}
+                            {listIrregularVerbs[indexList]?.translation}
                         </Text>
                         <View style={{
                             justifyContent: 'center',
@@ -139,17 +146,17 @@ export default function Irregularverbs() {
                                 >
                                     {randomProperty.toUpperCase()}
                                 </Chip>
-                                {mode && (
-                                    <Chip
-                                        mode="outlined"
-                                        style={[styles.chip, { borderColor: COLORS.primary }]}
-                                        textStyle={[styles.smallText, { color: COLORS.primary }]}
-                                    >
-                                        {`Nivel ${level}`}
-                                    </Chip>
-                                )}
+
+                                <Chip
+                                    mode="outlined"
+                                    style={[styles.chip, { borderColor: COLORS.primary }]}
+                                    textStyle={[styles.smallText, { color: COLORS.primary }]}
+                                >
+                                    {`${level + 1}`}
+                                </Chip>
+
                             </View>
-                            <SwitchLabel label={mode ? "Randon" : "Niveles"} value={mode} setValue={setMode} />
+
                         </View>
 
                         <View style={{
@@ -174,16 +181,6 @@ export default function Irregularverbs() {
                             gap: 10,
                             marginVertical: 20
                         }}>
-                            {/* El botón "Siguiente" solo aparece si la condición se cumple */}
-                            {!mode && (
-                                <Button
-                                    mode="outlined"
-                                    onPress={() => handleRandom()}
-                                    style={{ flex: 1 }} // 👈 Hace que ocupe la mitad del espacio disponible
-                                >
-                                    Siguiente
-                                </Button>
-                            )}
                             <Button
                                 mode="contained"
                                 textColor={COLORS.background}

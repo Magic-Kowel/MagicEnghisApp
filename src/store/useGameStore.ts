@@ -8,11 +8,15 @@ interface WordItem {
 }
 
 interface GameState {
-  currentLevelWords: WordItem[];
-  setCurrentLevelWords: (words: WordItem[]) => void;
+  irregularVerbs: WordItem[];
+  setIrregularVerbs: (words: WordItem[]) => void;
+  score: number;
+  setScore: (score: number) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
-  currentLevelWords: [],
-  setCurrentLevelWords: (words) => set({ currentLevelWords: words }),
+  irregularVerbs: [],
+  setIrregularVerbs: (words) => set({ irregularVerbs: words }),
+  score: 0,
+  setScore: (score) => set({ score: score }),
 }));

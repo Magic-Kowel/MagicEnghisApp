@@ -1,7 +1,8 @@
-import { Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import { useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
 
 interface CustomKeyboardProps {
-    onPressKey: (key: string) => void; // 👈 Cambiamos a una función normal que recibe la tecla
+    onPressKey: (key: string) => void;
 }
 
 export default function CustomKeyboard({ onPressKey }: CustomKeyboardProps) {
@@ -16,56 +17,109 @@ export default function CustomKeyboard({ onPressKey }: CustomKeyboardProps) {
 
     return (
         <View style={styles.keyboardContainer}>
-            {rows.map((row, rowIndex) => (
-                <View key={rowIndex} style={styles.row}>
-                    {row.map((key) => (
-                        <Pressable
-                            key={key}
-                            style={({ pressed }) => [
-                                styles.key,
-                                { backgroundColor: isDarkMode ? '#2d2d2d' : '#e0e0e0' },
-                                pressed && { backgroundColor: isDarkMode ? '#444444' : '#b0b0b0' }
-                            ]}
-                            // Al presionar, simplemente mandamos la tecla hacia arriba
-                            onPress={() => onPressKey(key)}
-                        >
-                            <Text style={[styles.keyText, { color: isDarkMode ? '#ffffff' : '#000000' }]}>
-                                {key}
-                            </Text>
-                        </Pressable>
-                    ))}
-                </View>
-            ))}
-        </View>
+            {
+                rows.map((row, rowIndex) => (
+                    <View key={`row-${rowIndex}`} style={styles.row}>
+                        {row.map((key) => (
+                            <AnimatedKey
+                                key={key}
+                                kKey={key}
+                                isDarkMode={isDarkMode}
+                                onPressKey={onPressKey}
+                            />
+                        ))}
+                    </View>
+                ))
+            }
+        </View >
+    );
+}
+
+// 💡 Creamos un subcomponente para manejar la animación individual de cada tecla de forma fluida
+function AnimatedKey({ kKey, isDarkMode, onPressKey }: { kKey: string; isDarkMode: boolean; onPressKey: (k: string) => void }) {
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+    const isSpecialKey = kKey === '⌫';
+
+    const handlePressIn = () => {
+        Animated.spring(scaleAnim, {
+            toValue: 0.90, // Se encoge un 10% al tocar
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 4,
+        }).start();
+    };
+
+    const handlePressOut = () => {
+        Animated.spring(scaleAnim, {
+            toValue: 1, // Regresa a su tamaño original
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 6,
+        }).start();
+    };
+
+    return (
+        <Pressable
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={() => onPressKey(kKey)}
+            style={[
+                isSpecialKey ? styles.specialKey : styles.normalKey,
+            ]}
+        >
+            <Animated.View
+                style={[
+                    styles.key,
+                    {
+                        backgroundColor: isDarkMode ? '#374151' : '#e5e7eb',
+                        transform: [{ scale: scaleAnim }], // 👈 Aquí aplicamos la animación de escala
+                    },
+                ]}
+            >
+                <Text style={[
+                    styles.keyText,
+                    { color: isDarkMode ? '#ffffff' : '#1f2937' }
+                ]}>
+                    {kKey}
+                </Text>
+            </Animated.View>
+        </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     keyboardContainer: {
         width: '100%',
-        paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingVertical: 8,
+        paddingHorizontal: 4,
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: 6,
-        gap: 4,
+        marginBottom: 8,
+        gap: 6,
+    },
+    normalKey: {
+        flex: 1,
+    },
+    specialKey: {
+        flex: 1.5,
     },
     key: {
-        flex: 1,
-        height: 48,
+        height: 52,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 6,
-        elevation: 1,
+        borderRadius: 8,
+        elevation: 2,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
+        shadowOpacity: 0.15,
+        shadowRadius: 1.5,
     },
     keyText: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 18,
+        fontWeight: '600',
     },
 });

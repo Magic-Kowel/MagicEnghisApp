@@ -31,8 +31,8 @@ const chunkArray = (array: any[], chunkSize: number = 10) => {
 export default function LevelsScreen() {
     const [score, setScore] = useState(0);
     const router = useRouter();
-    const setCurrentLevelWords = useGameStore((state) => state.setCurrentLevelWords);
-
+    const setIrregularVerbs = useGameStore((state) => state.setIrregularVerbs);
+    const setScoreglobal = useGameStore((state) => state.setScore);
     const levelsArray = useMemo(() => {
         return chunkArray(verbsIrregularsList, 10);
     }, [verbsIrregularsList]);
@@ -101,7 +101,8 @@ export default function LevelsScreen() {
                                         }}
                                         onPress={() => {
                                             if (isUnlocked) {
-                                                setCurrentLevelWords(levelWords);
+                                                setIrregularVerbs(levelWords);
+                                                setScoreglobal(score);
                                                 router.push('/irregularverbs/Irregularverbs');
                                             }
                                         }}

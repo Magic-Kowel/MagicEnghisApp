@@ -31,8 +31,6 @@ export default function LearnIrregularVerbs() {
 
     return (
         <Container>
-
-
             {/* Input de Búsqueda */}
             <View style={styles.containerInput}>
                 <TextInput

@@ -1,14 +1,41 @@
 // app/_layout.tsx
 import CustomDrawerContent from '@/components/drawer/CustomDrawerContent';
+import Loader from '@/components/Loader';
 import { Drawer } from 'expo-router/drawer';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DefaultTheme, MD3DarkTheme, Provider as PaperProvider } from 'react-native-paper';
 import { COLORS } from '../constants/colors';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const paperTheme = colorScheme === 'dark' ? MD3DarkTheme : DefaultTheme;
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepareApp() {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 0));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+        await SplashScreen.hideAsync();
+      }
+    }
+
+    prepareApp();
+  }, []);
+
+  if (!isReady) {
+    return (
+      <Loader />
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -63,7 +90,7 @@ export default function RootLayout() {
           />
           <Drawer.Screen
             name="irregularverbs/Irregularverbs"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Prepositions Place' }}
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Práctica de Verbos' }}
           />
         </Drawer>
       </PaperProvider>

@@ -1,23 +1,21 @@
+import speakMessage from '@/tools/speech';
 import { useCallback } from 'react';
 import {
     FlatList,
+    Pressable,
     StyleSheet,
     Text,
     View,
     useColorScheme
 } from 'react-native';
-
 interface StackTableProps {
     listTitles: string[];
     listKeys: string[];
     dataList: Record<string, any>[];
 }
-
 export default function StackTable({ listTitles, listKeys, dataList }: StackTableProps) {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
-
-    // 1. Añadimos isDarkMode a las dependencias del useCallback
     const renderItem = useCallback(({ item: row }: { item: Record<string, any> }) => {
         return (
             <View style={[
@@ -25,12 +23,18 @@ export default function StackTable({ listTitles, listKeys, dataList }: StackTabl
                 { backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff' } // Fondo de fila adaptativo
             ]}>
                 {listKeys.map((key, keyIndex) => (
-                    <View key={`StackTable-${key}-${keyIndex}`} style={styles.listItem}>
+                    <Pressable
+                        key={`StackTable-${key}-${keyIndex}`}
+                        style={styles.listItem}
+                        onPress={() => speakMessage(row[key])}
+                    >
                         {/* Título adaptativo */}
-                        <Text style={[
-                            styles.listTextTitle,
-                            { color: isDarkMode ? '#bb86fc' : '#333' }
-                        ]}>
+                        <Text
+                            style={[
+                                styles.listTextTitle,
+                                { color: isDarkMode ? '#bb86fc' : '#333' }
+                            ]}
+                        >
                             {listTitles[keyIndex]}
                         </Text>
                         {/* Valor adaptativo */}
@@ -40,7 +44,7 @@ export default function StackTable({ listTitles, listKeys, dataList }: StackTabl
                         ]} numberOfLines={3}>
                             {row[key]}
                         </Text>
-                    </View>
+                    </Pressable>
                 ))}
                 <View style={[
                     styles.divider,
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     listItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 8,
+        paddingVertical: 12,
         paddingHorizontal: 16,
         alignItems: 'center',
     },
