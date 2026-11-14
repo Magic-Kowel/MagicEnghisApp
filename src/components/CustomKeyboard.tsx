@@ -10,7 +10,7 @@ import {
 
 interface CustomKeyboardProps {
     onPressKey: (key: string) => void;
-    spaceKey: boolean;
+    spaceKey?: boolean;
 }
 
 export default function CustomKeyboard({ onPressKey, spaceKey = false }: CustomKeyboardProps) {

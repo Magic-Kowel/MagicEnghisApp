@@ -7,6 +7,7 @@ import ModalCheck from '@/components/modal/ModalCheck';
 import Title from '@/components/Title';
 import { COLORS } from '@/constants/colors';
 import { useGameStore } from '@/store/useGameStore';
+import formatValue from '@/tools/formatValue';
 import { getData, saveData } from '@/tools/storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ function getRandomProperty<T extends Record<string, any>>(obj: T): keyof T {
 };
 export default function Irregularverbs() {
     const [text, setText] = useState("");
+    const [translation, setTranslation] = useState("");
     const [indexList, setIndexList] = useState(0);
     const [level, setLevel] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
@@ -81,14 +83,16 @@ export default function Irregularverbs() {
         const propertyKey = randomProperty as keyof typeof listIrregularVerbs[number];
         const expectedAnswer = String(listIrregularVerbs[indexList][propertyKey] || "").toLowerCase();
         setCorrectAnswer(expectedAnswer);
-        const result = expectedAnswer === text.toLowerCase().trim();
+        const result = expectedAnswer.includes(text.toLowerCase().trim());
         setIsSuccess(result);
         setModalVisible(true);
         handleModeGame(result);
         setText("");
     };
-
-
+    useEffect(() => {
+        const displayValue = formatValue(listIrregularVerbs[indexList]?.translation);
+        setTranslation(displayValue);
+    }, [indexList])
     return (<>
         <ScrollView>
             <Container>
@@ -115,7 +119,7 @@ export default function Irregularverbs() {
                                 marginVertical: 20
                             }}
                         >
-                            {listIrregularVerbs[indexList]?.translation}
+                            {translation}
                         </Text>
                         <View style={{
                             justifyContent: 'center',

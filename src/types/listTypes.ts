@@ -4,8 +4,8 @@ export interface WordItem {
 }
 export interface IrregularItem {
   infinitive: string;
-  past: string;
-  participle: string;
-  translation: string;
+  past: string[];
+  participle: string[];
+  translation: string[];
   difficulty: string;
 }

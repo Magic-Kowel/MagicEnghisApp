@@ -1,3 +1,4 @@
+import formatValue from "@/tools/formatValue";
 import speakMessage from "@/tools/speech";
 import { Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 
@@ -10,7 +11,6 @@ interface StackTableProps {
 export default function StackTableList({ listTitles, listKeys, dataList }: StackTableProps) {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
-
     return (
         <View style={[
             styles.paper,
@@ -24,30 +24,34 @@ export default function StackTableList({ listTitles, listKeys, dataList }: Stack
                         { backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff' }
                     ]}
                 >
-                    {listKeys.map((key, keyIndex) => (
-                        <Pressable
-                            key={`StackTable-${key}-${keyIndex}`}
-                            style={styles.listItem}
-                            onPress={() => speakMessage(row[key])}
-                        >
-                            {/* Título adaptativo */}
-                            <Text
-                                style={[
-                                    styles.listTextTitle,
-                                    { color: isDarkMode ? '#bb86fc' : '#333' }
-                                ]}
+                    {listKeys.map((key, keyIndex) => {
+                        const displayValue = formatValue(row[key]);
+
+                        return (
+                            <Pressable
+                                key={`StackTable-${key}-${keyIndex}`}
+                                style={styles.listItem}
+                                onPress={() => speakMessage(displayValue)}
                             >
-                                {listTitles[keyIndex]}
-                            </Text>
-                            {/* Valor adaptativo */}
-                            <Text style={[
-                                styles.listTextValue,
-                                { color: isDarkMode ? '#e0e0e0' : '#030303' }
-                            ]} numberOfLines={3}>
-                                {row[key]}
-                            </Text>
-                        </Pressable>
-                    ))}
+                                {/* Título adaptativo */}
+                                <Text
+                                    style={[
+                                        styles.listTextTitle,
+                                        { color: isDarkMode ? '#bb86fc' : '#333' }
+                                    ]}
+                                >
+                                    {listTitles[keyIndex]}
+                                </Text>
+                                {/* Valor adaptativo formateado */}
+                                <Text style={[
+                                    styles.listTextValue,
+                                    { color: isDarkMode ? '#e0e0e0' : '#030303' }
+                                ]} numberOfLines={3}>
+                                    {displayValue}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
                     <View style={[
                         styles.divider,
                         { backgroundColor: isDarkMode ? '#333' : '#e0e0e0' }
