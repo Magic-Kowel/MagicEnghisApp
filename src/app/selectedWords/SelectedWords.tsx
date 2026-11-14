@@ -49,8 +49,7 @@ export default function SelectedWords({ list }: { list: WordItem[] }) {
         );
 
         setOptions(currentOptions);
-    }, []); // Nota: si 'randomIndex' o 'list' vienen de fuera y cambian, podrías necesitarlos aquí, pero si son estáticos o imports está bien así.
-
+    }, []);
     useEffect(() => {
         handleRandom();
     }, []);
@@ -86,7 +85,7 @@ export default function SelectedWords({ list }: { list: WordItem[] }) {
 
                     {/* Opciones de respuesta dinámicas */}
                     <View style={styles.optionsContainer}>
-                        {options.map((item: any, index: number) => (
+                        {options.map((item: WordItem, index: number) => (
                             <Button
                                 key={index}
                                 mode="outlined"

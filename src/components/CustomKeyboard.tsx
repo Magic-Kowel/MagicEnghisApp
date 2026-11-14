@@ -1,11 +1,19 @@
 import { useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View, useColorScheme } from 'react-native';
+import {
+    Animated,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+    useColorScheme
+} from 'react-native';
 
 interface CustomKeyboardProps {
     onPressKey: (key: string) => void;
+    spaceKey: boolean;
 }
 
-export default function CustomKeyboard({ onPressKey }: CustomKeyboardProps) {
+export default function CustomKeyboard({ onPressKey, spaceKey = false }: CustomKeyboardProps) {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
 
@@ -21,23 +29,36 @@ export default function CustomKeyboard({ onPressKey }: CustomKeyboardProps) {
             {
                 rows.map((row, rowIndex) => (
                     <View key={`row-${rowIndex}`} style={styles.row}>
-                        {row.map((key) => (
-                            <AnimatedKey
-                                key={key}
-                                kKey={key}
-                                isDarkMode={isDarkMode}
-                                onPressKey={onPressKey}
-                            />
-                        ))}
+                        {row.filter((item => {
+                            if (!spaceKey && item === " ") {
+                                return;
+                            }
+                            return item;
+                        })).map((key) => {
+                            return (
+                                <AnimatedKey
+                                    key={key}
+                                    kKey={key}
+                                    isDarkMode={isDarkMode}
+                                    onPressKey={onPressKey}
+                                />
+                            );
+                        })}
                     </View>
                 ))
             }
         </View >
     );
 }
-
-// 💡 Creamos un subcomponente para manejar la animación individual de cada tecla de forma fluida
-function AnimatedKey({ kKey, isDarkMode, onPressKey }: { kKey: string; isDarkMode: boolean; onPressKey: (k: string) => void }) {
+function AnimatedKey({
+    kKey,
+    isDarkMode,
+    onPressKey
+}: {
+    kKey: string;
+    isDarkMode: boolean;
+    onPressKey: (k: string) => void
+}) {
     const scaleAnim = useRef(new Animated.Value(1)).current;
     const isSpecialKey = kKey === '⌫';
 

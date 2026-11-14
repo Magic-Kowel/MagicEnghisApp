@@ -12,7 +12,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
 import { Card, Chip, ProgressBar, Text } from 'react-native-paper';
-const getRandomProperty = (obj: any) => {
+function getRandomProperty<T extends Record<string, any>>(obj: T): keyof T {
     const keys = Object.keys(obj).filter(
         (key) => key !== "translation" && key !== "difficulty" && key !== "infinitive",
     );
@@ -38,7 +38,7 @@ export default function Irregularverbs() {
     useFocusEffect(
         useCallback(() => {
             setLevel(0);
-            setLevel(0);
+            setIndexList(0);
         }, [listIrregularVerbs])
     );
     const handleRandom = (nextLevel = level) => {

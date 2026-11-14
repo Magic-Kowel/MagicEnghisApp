@@ -1,6 +1,6 @@
 import ListLeves from '@/components/ListLeves';
 import Title from '@/components/Title';
-import { LIS_KEYS_VERBS_IRREGULARS, LIS_TTITLES_VERBS_IRREGULARS, scoreIrregularVerbsSelect } from '@/constants/constants';
+import { LIS_KEYS_VERBS_IRREGULARS, LIS_TTITLES_VERBS_IRREGULARS, scoreIrregularVerbsWrite } from '@/constants/constants';
 import { verbsIrregularsList } from '@/db/verbsIrregularsList';
 import { useGameStore } from '@/store/useGameStore';
 import { useFocusEffect } from 'expo-router';
@@ -21,7 +21,7 @@ export default function LevelsScreen() {
             <Title title='Niveles de Preposiciones' />
             <ListLeves
                 list={verbsIrregularsList}
-                namescore={scoreIrregularVerbsSelect}
+                namescore={scoreIrregularVerbsWrite}
                 path="/irregularverbs/Irregularverbs"
                 setScoreGlobal={setScoreglobal}
                 setLevelsArray={setIrregularVerbs}

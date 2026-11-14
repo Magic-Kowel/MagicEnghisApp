@@ -14,8 +14,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import ModalSelectedLevel from "./modal/ModalSelectedLevel";
 const AnimatedSurface = Animated.createAnimatedComponent(Surface);
-const chunkArray = (array: any[], chunkSize: number = 10) => {
-    const results = [];
+const chunkArray = <T extends Record<string, any>>(array: T[], chunkSize: number = 10) => {
+    const results: T[][] = [];
     for (let i = 0; i < array.length; i += chunkSize) {
         results.push(array.slice(i, i + chunkSize));
     }

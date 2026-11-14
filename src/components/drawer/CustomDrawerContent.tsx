@@ -5,7 +5,7 @@ import DrawerSubMenu from './DrawerSubMenu';
 import HeaderDrawer from './HeaderDrawer';
 import ItemMenu from './ItemMenu';
 
-export default function CustomDrawerContent(props: any) {
+export default function CustomDrawerContent<T>(props: T) {
   const [isAjustesOpen, setIsAjustesOpen] = useState(false);
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
