@@ -4,16 +4,16 @@
     "slug": "magicEnghisApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/hat-wizard-solid.png",
+    "icon": "./assets/images/icon-hat-wizard.png",
     "scheme": "magicenghisapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/images/hat-wizard-solid.png"
+      "icon": "./assets/images/icon-hat-wizard.png"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/hat-wizard-solid.png",
+        "foregroundImage": "./assets/images/icon-hat-wizard.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
@@ -22,7 +22,7 @@
     },
     "web": {
       "output": "server",
-      "favicon": "./assets/images/hat-wizard-solid.png"
+      "favicon": "./assets/images/icon-hat-wizard.png"
     },
     "plugins": [
       "expo-router",
@@ -30,7 +30,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#208AEF",
-          "image": "./assets/images/hat-wizard-solid.png",
+          "image": "./assets/images/icon-hat-wizard.png",
           "imageWidth": 76
         }
       ],

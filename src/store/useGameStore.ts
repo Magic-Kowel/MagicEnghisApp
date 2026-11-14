@@ -7,6 +7,13 @@ interface GameState {
   setScore: (score: number) => void;
   phrasalVerbs: WordItem[];
   setPhrasalVerb: (words: WordItem[]) => void;
+  pathBack: string;
+  setPathBack: (path: string) => void;
+
+  listTitles: string[];
+  setListTitles: (listTitles: string[]) => void;
+  listKeys: string[];
+  setListKeys: (listKeys: string[]) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
@@ -16,4 +23,10 @@ export const useGameStore = create<GameState>((set) => ({
   setScore: (score) => set({ score: score }),
   phrasalVerbs: [],
   setPhrasalVerb: (words) => set({ phrasalVerbs: words }),
+  pathBack: "",
+  setPathBack: (path) => set({ pathBack: path }),
+  listTitles: [],
+  setListTitles: (listTitles) => set({ listTitles: listTitles }),
+  listKeys: [],
+  setListKeys: (listKeys) => set({ listKeys: listKeys }),
 }));

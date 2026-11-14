@@ -1,23 +1,17 @@
 import LearnButton from "@/components/LearnButton";
 import { daysWeeksList } from "@/db/daysWeeksList";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
 import LearnWords from "./LearnWords";
 import MemorizeWords from "./MemorizeWords";
+import Container from "@/components/Container";
 export default function FamilyMembers() {
     const [isLearn, setIsLearn] = useState(false);
-    return (<>
+    return (<Container>
         <LearnButton isLearn={isLearn} setIsLearn={setIsLearn} />
         {isLearn ? (
             <MemorizeWords list={daysWeeksList} />
         ) : (
             <LearnWords list={daysWeeksList} />
         )}
-    </>);
+    </Container>);
 }
-const styles = StyleSheet.create({
-    containerButton: {
-        paddingHorizontal: 40,
-        paddingVertical: 10,
-    },
-});

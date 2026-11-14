@@ -13,7 +13,7 @@ interface StackTableProps {
     listKeys: string[];
     dataList: Record<string, any>[];
 }
-export default function StackTable({ listTitles, listKeys, dataList }: StackTableProps) {
+export default function StackTable({ listTitles, listKeys, dataList, }: StackTableProps) {
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
     const renderItem = useCallback(({ item: row }: { item: Record<string, any> }) => {
@@ -75,7 +75,7 @@ export default function StackTable({ listTitles, listKeys, dataList }: StackTabl
 const styles = StyleSheet.create({
     paper: {
         width: '100%',
-        maxHeight: '85%',
+        maxHeight: '90%',
         marginTop: 8,
         borderRadius: 8,
         elevation: 5,

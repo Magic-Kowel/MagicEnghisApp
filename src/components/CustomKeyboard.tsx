@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         flex: 1.5,
     },
     key: {
-        height: 52,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,

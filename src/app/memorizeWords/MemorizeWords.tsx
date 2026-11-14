@@ -1,6 +1,6 @@
 import Container from '@/components/Container';
 import CustomKeyboard from '@/components/CustomKeyboard';
-import ModalCheck from '@/components/ModalCheck';
+import ModalCheck from '@/components/modal/ModalCheck';
 import Title from '@/components/Title';
 import { COLORS } from '@/constants/colors';
 import normalizeText from '@/tools/normalizeText';
@@ -141,17 +141,12 @@ export default function MemorizeWords({ list }: MemorizeWordsProps) {
     </>);
 }
 const styles = StyleSheet.create({
-
     container: {
         paddingHorizontal: 20,
-        marginVertical: 40,
-        alignItems: 'center',
+        marginVertical: 10,
+        alignItems: 'center'
     },
     text: {
         color: COLORS.background
-    },
-    containerButton: {
-        paddingHorizontal: 40,
-        paddingVertical: 10,
-    },
+    }
 });

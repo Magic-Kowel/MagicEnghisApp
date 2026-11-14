@@ -17,12 +17,25 @@ export default function CustomDrawerContent(props: any) {
         { backgroundColor: isDark ? '#333333' : '#f5f5f5' }
       ]}>
       <HeaderDrawer text='Magic Enghis' />
-      <ItemMenu title='Verbos irregulares' icon='book-open-variant' path='/' />
-      <ItemMenu title='Prepositions Place' icon='sign-direction' path='/prepositionsPlace' />
-      <ItemMenu title='Verbos Frasales' icon='sign-direction' path='/phrasalVerbs/LevelsScreen' />
+      <ItemMenu
+        title='Verbos irregulares'
+        icon='book-open-variant'
+        path='/'
+      />
+      <ItemMenu
+        title='Prepositions Place'
+        icon='sign-direction'
+        path='/prepositionsPlace'
+      />
+      <ItemMenu
+        title='Verbos Frasales'
+        icon='book-alphabet'
+        path='/phrasalVerbs/LevelsScreen'
+      />
+
       <DrawerSubMenu
         title="Memorize words"
-        iconName="people-outline"
+        iconName="book-education-outline"
         open={isAjustesOpen}
         setOpen={setIsAjustesOpen}
         listItems={[

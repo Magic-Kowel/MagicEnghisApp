@@ -1,4 +1,3 @@
-// app/_layout.tsx
 import CustomDrawerContent from '@/components/drawer/CustomDrawerContent';
 import Loader from '@/components/Loader';
 import { Drawer } from 'expo-router/drawer';
@@ -32,9 +31,7 @@ export default function RootLayout() {
   }, []);
 
   if (!isReady) {
-    return (
-      <Loader />
-    );
+    return <Loader />;
   }
 
   return (
@@ -58,32 +55,27 @@ export default function RootLayout() {
             },
           }}
         >
+          {/* Ruta principal / Index */}
           <Drawer.Screen
             name="index"
             options={{
               title: 'Verbos irregulares',
             }}
           />
+
+          {/* Carpeta completa de Verbos Frasales (Maneja su propio Stack internamente) */}
           <Drawer.Screen
-            name="memorizeWords/familyMembers"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Family Members' }}
+            name="phrasalVerbs"
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Frasales' }}
           />
+
+          {/* Carpeta completa de Memorize Words (Maneja su propio Stack internamente) */}
           <Drawer.Screen
-            name="memorizeWords/daysWeeks"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Weeks' }}
+            name="memorizeWords"
+            options={{ drawerItemStyle: { display: 'none' }, title: 'Memorize Words' }}
           />
-          <Drawer.Screen
-            name="memorizeWords/fruits"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Fruits' }}
-          />
-          <Drawer.Screen
-            name="memorizeWords/months"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Months' }}
-          />
-          <Drawer.Screen
-            name="memorizeWords/seasons"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Seasons' }}
-          />
+
+          {/* Otras pantallas independientes que no necesiten sub-pila */}
           <Drawer.Screen
             name="prepositionsPlace"
             options={{ drawerItemStyle: { display: 'none' }, title: 'Prepositions Place' }}
@@ -91,14 +83,6 @@ export default function RootLayout() {
           <Drawer.Screen
             name="irregularverbs/Irregularverbs"
             options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Irregulares' }}
-          />
-          <Drawer.Screen
-            name="phrasalVerbs/LevelsScreen"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Frasales' }}
-          />
-          <Drawer.Screen
-            name="phrasalVerbs/PhrasalVerbs"
-            options={{ drawerItemStyle: { display: 'none' }, title: 'Verbos Frasales' }}
           />
         </Drawer>
       </PaperProvider>

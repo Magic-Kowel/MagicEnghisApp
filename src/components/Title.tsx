@@ -6,10 +6,12 @@ export default function Title({ title }: { title: string }) {
     const isDarkMode = colorScheme === 'dark';
     return (<>
         <Text
+        
             variant="titleLarge"
             style={{
                 color: isDarkMode ? COLORS.background : COLORS.backgrounDark,
-                textAlign: 'center'
+                textAlign: 'center',
+                flexShrink: 1
             }}
         >
             {title}

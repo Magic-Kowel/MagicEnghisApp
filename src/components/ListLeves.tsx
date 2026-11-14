@@ -1,6 +1,7 @@
 import { COLORS } from "@/constants/colors";
+import { useGameStore } from "@/store/useGameStore";
 import { getData } from "@/tools/storage";
-import { WordItem } from "@/types/listTypes";
+import { IrregularItem } from "@/types/listTypes";
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -11,8 +12,8 @@ import Animated, {
     useSharedValue,
     withSpring
 } from 'react-native-reanimated';
+import ModalSelectedLevel from "./modal/ModalSelectedLevel";
 const AnimatedSurface = Animated.createAnimatedComponent(Surface);
-
 const chunkArray = (array: any[], chunkSize: number = 10) => {
     const results = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -20,12 +21,12 @@ const chunkArray = (array: any[], chunkSize: number = 10) => {
     }
     return results;
 };
-interface ListLevesType {
+interface ListLevesType<T = any> {
     path: string;
     namescore: string;
-    list: WordItem[];
+    list: T[];
     setScoreGlobal: (score: number) => void;
-    setLevelsArray: (words: WordItem[]) => void,
+    setLevelsArray: (words: T[]) => void,
 }
 export default function ListLeves({
     list,
@@ -36,6 +37,10 @@ export default function ListLeves({
 }: ListLevesType) {
     const router = useRouter();
     const [score, setScore] = useState(0);
+    const [visible, setVisible] = useState(false);
+    const [listLevel, setListLevel] = useState<IrregularItem[]>([]);
+    const listKeys = useGameStore((state) => state.listKeys);
+    const listTitles = useGameStore((state) => state.listTitles);
     const levelsArray = useMemo(() => {
         return chunkArray(list, 10);
     }, [list]);
@@ -48,7 +53,10 @@ export default function ListLeves({
             loadScore();
         }, [])
     );
-
+    const handleStart = () => {
+        setVisible(false);
+        router.push(path as any);
+    }
     return (<>
         <Text style={styles.headerSubtitle}>
             Total de palabras: {list.length} ({levelsArray.length} niveles en total)
@@ -102,8 +110,9 @@ export default function ListLeves({
                                     onPress={() => {
                                         if (isUnlocked) {
                                             setLevelsArray(levelWords);
-                                            setScoreGlobal(score);
-                                            router.push(path as any);
+                                            setScoreGlobal(index);
+                                            setVisible(true)
+                                            setListLevel(levelWords);
                                         }
                                     }}
                                 />
@@ -114,6 +123,14 @@ export default function ListLeves({
                 })}
             </View>
         </ScrollView>
+        <ModalSelectedLevel
+            listLevel={listLevel}
+            visible={visible}
+            setVisible={setVisible}
+            handleStart={handleStart}
+            listTitles={listTitles}
+            listKeys={listKeys}
+        />
     </>);
 }
 const styles = StyleSheet.create({

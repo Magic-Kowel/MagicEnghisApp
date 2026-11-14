@@ -7,7 +7,6 @@ interface ItemMenuType {
     path: string;
     icon: string;
 }
-
 export default function ItemMenu({ title, path, icon }: ItemMenuType) {
     const router = useRouter();
     const pathname = usePathname();
@@ -16,7 +15,7 @@ export default function ItemMenu({ title, path, icon }: ItemMenuType) {
     return (<>
         <TouchableOpacity
             style={[styles.menuItem, pathname === path && styles.activeItem]}
-            onPress={() => router.push(path as any)}
+            onPress={() => router.replace(path as any)}
         >
             <MaterialCommunityIcons name={icon as any} size={22} color={COLORS.primary} />
             <Text style={[styles.menuText, { color: isDark ? '#fff' : '#333' }]}>

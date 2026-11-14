@@ -1,9 +1,14 @@
+import SelectedWordsLevel from "@/components/SelectedWordsLevel";
 import { useGameStore } from "@/store/useGameStore";
-import SelectedWords from "../selectedWords/SelectedWords";
 
 export default function PhrasalVerbs() {
     const list = useGameStore((state) => state.phrasalVerbs);
+    const pathBack = useGameStore((state) => state.pathBack);
     return (<>
-        <SelectedWords list={list} />
+        <SelectedWordsLevel
+            list={list}
+            namescore="scorePhrasalVerbsSelect"
+            pathBack={pathBack}
+        />
     </>);
 }

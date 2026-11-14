@@ -1,5 +1,5 @@
 import Container from '@/components/Container';
-import ModalCheck from '@/components/ModalCheck';
+import ModalCheck from '@/components/modal/ModalCheck';
 import Title from '@/components/Title';
 import { COLORS } from '@/constants/colors';
 import { randomIndex } from '@/tools/randomIndex';
@@ -59,7 +59,6 @@ export default function SelectedWords({ list }: { list: WordItem[] }) {
         if (word?.spanish) {
             setCorrectAnswer(word?.spanish);
         }
-        console.log(result);
         setIsSuccess(result);
         setModalVisible(true)
         handleRandom();

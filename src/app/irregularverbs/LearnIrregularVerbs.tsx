@@ -1,10 +1,13 @@
-import Container from '@/components/Container';
-import GroupButton from '@/components/GroupButton';
+import GroupButton from '@/components/buttons/GroupButton';
 import StackTable from '@/components/StackTable';
+import {
+    LIS_KEYS_VERBS_IRREGULARS,
+    LIS_TTITLES_VERBS_IRREGULARS
+} from '@/constants/constants';
 import { verbsIrregularsList } from '@/db/verbsIrregularsList';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 export default function LearnIrregularVerbs() {
     const [search, setSearch] = useState("");
     const [listFilter, setListFilter] = useState(verbsIrregularsList);
@@ -29,18 +32,15 @@ export default function LearnIrregularVerbs() {
     }, [search, levelLearn]);
 
     return (
-        <Container>
+        <>
             {/* Input de Búsqueda */}
             <View style={styles.containerInput}>
-                <TextInput
-                    label="Buscar verbo o traducción..."
-                    mode="outlined"
+                <Searchbar
+                    placeholder="Buscar verbo o traducción..."
+                    onChangeText={setSearch}
                     value={search}
-                    onChangeText={(newText) => setSearch(newText)}
-                    right={<TextInput.Icon icon="table-search" />}
                 />
             </View>
-
             {/* Botones de Filtro por Nivel */}
             <GroupButton
                 value={levelLearn}
@@ -57,22 +57,12 @@ export default function LearnIrregularVerbs() {
             {/* Tabla con FlatList propia */}
             <View style={styles.tableContainer}>
                 <StackTable
-                    listTitles={[
-                        "Traducción",
-                        "Infinitive",
-                        "Past",
-                        "Participle",
-                    ]}
-                    listKeys={[
-                        "translation",
-                        "infinitive",
-                        "past",
-                        "participle",
-                    ]}
+                    listTitles={LIS_TTITLES_VERBS_IRREGULARS}
+                    listKeys={LIS_KEYS_VERBS_IRREGULARS}
                     dataList={listFilter}
                 />
             </View>
-        </Container>
+        </>
     )
 }
 const styles = StyleSheet.create({

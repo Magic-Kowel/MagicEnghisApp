@@ -1,16 +1,17 @@
 
+import BackButton from '@/components/buttons/BackButton';
+import ButtonMain from '@/components/buttons/ButtonMain';
+import Container from '@/components/Container';
 import CustomKeyboard from '@/components/CustomKeyboard';
-import ModalCheck from '@/components/ModalCheck';
+import ModalCheck from '@/components/modal/ModalCheck';
 import Title from '@/components/Title';
 import { COLORS } from '@/constants/colors';
 import { useGameStore } from '@/store/useGameStore';
-import { randomIndex } from '@/tools/randomIndex';
-import speakMessage from '@/tools/speech';
 import { getData, saveData } from '@/tools/storage';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState, } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
-import { Button, Card, Chip, Text } from 'react-native-paper';
+import { Card, Chip, ProgressBar, Text } from 'react-native-paper';
 const getRandomProperty = (obj: any) => {
     const keys = Object.keys(obj).filter(
         (key) => key !== "translation" && key !== "difficulty" && key !== "infinitive",
@@ -36,46 +37,34 @@ export default function Irregularverbs() {
     }, []);
     useFocusEffect(
         useCallback(() => {
-            if (!modalVisible) {
-                speakMessage(listIrregularVerbs[indexList]?.infinitive);
-            }
-            return () => {
-                // detener audio si es necesario
-            };
-        }, [modalVisible])
+            setLevel(0);
+            setLevel(0);
+        }, [listIrregularVerbs])
     );
     const handleRandom = (nextLevel = level) => {
-        const index = randomIndex(listIrregularVerbs);
         setIndexList(nextLevel);
-        const property = getRandomProperty(listIrregularVerbs[index]);
+        const property = getRandomProperty(listIrregularVerbs[nextLevel]);
         setRandomProperty(property);
     };
     async function handleModeGame(result: boolean) {
         let nextLevel = level;
-        // 1. Determinar el siguiente nivel según si acertó o falló
         if (!result) {
-            nextLevel = 0; // Si falla, vuelve al inicio
+            nextLevel = 0;
         } else {
-            nextLevel = level + 1; // Si acierta, avanza
+            nextLevel = level + 1;
         }
-        // 2. Verificar si ya se completaron todos los niveles
         if (nextLevel === listIrregularVerbs.length) {
             const savedScore = await getData('score') ?? 0;
-
-            // Si el puntaje actual es MAYOR al récord guardado, lo actualizamos
-            if (score > savedScore) {
-                await saveData('score', score); // Guardamos el puntaje real, SIN sumarle 1
+            if (score === savedScore) {
+                await saveData('score', score + 1);
             }
             setLevel(0);
             router.back();
             return;
         }
-        // 3. Actualizar el nivel actual
         setLevel(nextLevel);
         handleRandom(nextLevel);
-        // 4. Sincronizar el índice de la palabra según el mod
-        setIndexList(nextLevel); // En modo secuencial, el índice sigue al nivel
-
+        setIndexList(nextLevel);
     }
 
     const handleVirtualKeyPress = (key: string) => {
@@ -102,8 +91,9 @@ export default function Irregularverbs() {
 
     return (<>
         <ScrollView>
-            <View style={[styles.mainContainer, { backgroundColor: isDarkMode ? '#0f0f0f' : '#f5f5f5' }]}>
+            <Container>
                 <View style={styles.container}>
+                    <BackButton />
                     <Title title='Escribe la traducción' />
                 </View>
                 <Card>
@@ -131,14 +121,13 @@ export default function Irregularverbs() {
                             justifyContent: 'center',
                             alignItems: "center"
                         }}>
-
-                            <Text
-                                variant="bodyLarge"
-                                style={[styles.text, { color: isDarkMode ? COLORS.background : COLORS.backgrounDark }]}
-                            >
-                                Escribe el verbo en:
-                            </Text>
-                            <View style={styles.containerChips}>
+                            <View style={styles.containerCenter}>
+                                <Text
+                                    variant="bodyLarge"
+                                    style={[styles.text, { color: isDarkMode ? COLORS.background : COLORS.backgrounDark }]}
+                                >
+                                    Escribe el verbo en:
+                                </Text>
                                 <Chip
                                     mode="flat"
                                     textStyle={{ fontWeight: 'bold', color: COLORS.background }}
@@ -146,25 +135,16 @@ export default function Irregularverbs() {
                                 >
                                     {randomProperty.toUpperCase()}
                                 </Chip>
-
-                                <Chip
-                                    mode="outlined"
-                                    style={[styles.chip, { borderColor: COLORS.primary }]}
-                                    textStyle={[styles.smallText, { color: COLORS.primary }]}
-                                >
-                                    {`${level + 1}`}
-                                </Chip>
-
                             </View>
-
                         </View>
-
+                        <ProgressBar progress={indexList / listIrregularVerbs.length} color={COLORS.primary} />
                         <View style={{
                             backgroundColor: COLORS.primary,
                             borderRadius: 20,
                             alignSelf: 'center',
                             paddingHorizontal: text.length > 0 ? 10 : 0,
                             paddingVertical: 10,
+                            marginVertical: 10
                         }}>
                             <Text
                                 variant="titleLarge"
@@ -173,28 +153,22 @@ export default function Irregularverbs() {
                                 {text}
                             </Text>
                         </View>
-
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            gap: 10,
-                            marginVertical: 20
+                            marginVertical: 10
                         }}>
-                            <Button
-                                mode="contained"
-                                textColor={COLORS.background}
-                                buttonColor={COLORS.primary}
-                                onPress={handleValidate}
-                                style={{ flex: 1 }} // 👈 Hace que ocupe la mitad del espacio disponible
-                            >
-                                Validar
-                            </Button>
+                            <ButtonMain
+                                text='Validar'
+                                handle={handleValidate}
+                                full
+                            />
                         </View>
                         <CustomKeyboard onPressKey={handleVirtualKeyPress} />
                     </Card.Content>
                 </Card>
-            </View>
+            </Container>
         </ScrollView>
         <ModalCheck
             modalVisible={modalVisible}
@@ -205,37 +179,28 @@ export default function Irregularverbs() {
     </>)
 }
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1, // Ocupa toda la pantalla y permite que la FlatList interna maneje el scroll
-        backgroundColor: '#f5f5f5',
-    },
     container: {
+        flexDirection: "row",
         paddingHorizontal: 20,
         paddingTop: 10,
         paddingBottom: 10,
         alignItems: 'center',
-    },
-    containerInput: {
-        paddingHorizontal: 20,
-        paddingVertical: 8,
+        gap: 10
     },
     text: {
         color: COLORS.background
     },
     chip: {
-        marginVertical: 2,        // Espaciado vertical si hace wrap
+        marginVertical: 2,
         alignSelf: 'flex-start',
         color: COLORS.primary
     },
-    smallText: {
-        fontSize: 12,             // Simula el tamaño "small" de los chips
-    },
-    containerChips: {
-        flexDirection: 'row',     // Los coloca en horizontal
-        justifyContent: 'center', // 👈 ESTO CENTRA LOS CHIPS HORIZONTALMENTE
-        alignItems: 'center',     // Los alinea verticalmente al centro
-        gap: 8,                   // Espacio de separación entre ambos chips
-        marginVertical: 8,        // Espacio arriba y abajo del contenedor
+    containerCenter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 8,
+        marginVertical: 8,
     },
 
 });

@@ -1,5 +1,4 @@
 import { COLORS } from '@/constants/colors';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
@@ -12,7 +11,7 @@ interface ItemSubMenuType {
 
 interface DrawerSubMenuType {
     title: string;
-    iconName?: keyof typeof Ionicons.glyphMap; // <-- Añadido para cambiar el icono opcionalmente
+    iconName?: keyof typeof MaterialCommunityIcons.glyphMap; // <-- Añadido para cambiar el icono opcionalmente
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     listItems: ItemSubMenuType[];
@@ -20,7 +19,7 @@ interface DrawerSubMenuType {
 
 export default function DrawerSubMenu({
     title,
-    iconName = "settings-outline",
+    iconName,
     open,
     setOpen,
     listItems
@@ -32,14 +31,14 @@ export default function DrawerSubMenu({
         <View>
             <TouchableOpacity style={styles.dropdownToggle} onPress={() => setOpen(!open)}>
                 <View style={styles.row}>
-                    <Ionicons name={iconName} size={22} color={COLORS.primary} />
+                    <MaterialCommunityIcons name={iconName as any} size={22} color={COLORS.primary} />
                     <Text
                         style={[styles.dropdownText, { color: isDark ? '#fff' : '#333' }]}
                     >
                         {title}
                     </Text>
                 </View>
-                <Ionicons
+                <MaterialCommunityIcons
                     name={open ? "chevron-up" : "chevron-down"}
                     size={20}
                     color={isDark ? '#ccc' : '#666'}
