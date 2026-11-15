@@ -33,24 +33,51 @@ When you're ready, run:
 npm run reset-project
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+# Política de Privacidad
 
-### Other setup steps
+**Última actualización:** [Fecha actual, ej. 14 de noviembre de 2026]
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+[Nombre de tu Aplicación] ("nosotros", "nuestro" o "la aplicación") se compromete a proteger la privacidad de sus usuarios. Esta Política de Privacidad explica cómo se recopila, utiliza y protege su información cuando utiliza nuestra aplicación móvil de aprendizaje de idiomas.
 
-## Learn more
+Al descargar o utilizar [Nombre de tu Aplicación], usted acepta los términos de esta Política de Privacidad. Si no está de acuerdo con los términos de esta política, le rogamos que no utilice la aplicación.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 1. Información que recopilamos
 
-## Join the community
+Nuestra aplicación está diseñada pensando en su privacidad. Los tipos de datos que gestionamos son mínimos:
 
-Join our community of developers creating universal apps.
+- **Datos de progreso y juego local:** La aplicación almacena localmente en su dispositivo información relacionada con su progreso de aprendizaje (niveles superados, puntajes y estadísticas de verbos). Estos datos se guardan exclusivamente en el almacenamiento interno de su dispositivo para permitirle continuar con su progreso.
+- **Preferencias de usuario:** Configuraciones como el modo oscuro o preferencias de visualización se guardan de forma local en su dispositivo.
+- **Permisos del dispositivo:** La aplicación puede utilizar funciones nativas del dispositivo (como el motor de reproducción de audio o texto a voz) únicamente con el propósito de ofrecerle la pronunciación correcta de las palabras y verbos en inglés dentro de las lecciones.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 2. Datos sensibles y recopilación de terceros
+
+- **No recopilamos información personal identificable (PII):** No requerimos registros de cuentas, nombres, números de teléfono, correos electrónicos ni datos bancarios para utilizar las funciones principales de la aplicación.
+- **Datos de terceros:** La aplicación no comparte datos con servidores externos con fines publicitarios o de rastreo comercial.
+
+## 3. Cómo utilizamos la información
+
+La escasa información que maneja la aplicación se utiliza estrictamente para:
+
+- Mantener y mostrar su puntaje actual y récord en los diferentes niveles de aprendizaje.
+- Reproducir el audio de las palabras y verbos seleccionados durante su práctica.
+- Mejorar la experiencia general de usuario dentro de la aplicación.
+
+## 4. Almacenamiento y Seguridad
+
+Dado que los datos de puntaje y progreso se guardan **localmente en su dispositivo**, usted tiene el control total sobre ellos. Si desinstala la aplicación, es posible que dichos datos locales se borren, a menos que el sistema operativo del dispositivo realice una copia de seguridad automática autorizada por usted.
+
+## 5. Privacidad de los menores (Niños)
+
+Nuestra aplicación es de naturaleza educativa y es apta para usuarios de todas las edades. No recopilamos conscientemente información personal de niños menores de 13 años. Al ser una app educativa offline/local, los menores pueden utilizarla de forma segura.
+
+## 6. Cambios en esta Política de Privacidad
+
+Podemos actualizar nuestra Política de Privacidad de vez en cuando. Le recomendamos que revise esta página periódicamente para ver cualquier cambio. Los cambios entrarán en vigor inmediatamente después de su publicación en esta misma sección.
+
+## 7. Contacto
+
+Si tiene alguna pregunta, duda o sugerencia sobre nuestra Política de Privacidad o el manejo de datos de la aplicación, puede ponerse en contacto con nosotros a través del siguiente correo electrónico:
+
+- **Correo de contacto:** [tu-correo@ejemplo.com]

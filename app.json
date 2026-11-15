@@ -4,25 +4,25 @@
     "slug": "magicEnghisApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon-hat-wizard.png",
+    "icon": "./assets/images/hat-wizard-solid.png",
     "scheme": "magicenghisapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/images/icon-hat-wizard.png"
+      "icon": "./assets/images/hat-wizard-solid.png"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/icon-hat-wizard.png",
+        "foregroundImage": "./assets/images/hat-wizard-solid.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.magicEnghisApp"
+      "package": "com.josueRodrigoFierroMorfin.magicEnghisApp"
     },
     "web": {
       "output": "server",
-      "favicon": "./assets/images/icon-hat-wizard.png"
+      "favicon": "./assets/images/hat-wizard-solid.png"
     },
     "plugins": [
       "expo-router",
@@ -30,7 +30,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#208AEF",
-          "image": "./assets/images/icon-hat-wizard.png",
+          "image": "./assets/images/hat-wizard-solid.png",
           "imageWidth": 76
         }
       ],
